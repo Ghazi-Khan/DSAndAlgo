@@ -1,0 +1,114 @@
+// Codechef problem name: ALTPRE.  @Author :Ghazi-Khan
+//https://www.codechef.com/MCCC2018/problems/ALTPRE
+/*
+ **************************************************************************************************************
+  *                                                                                                           *
+   *                                                                                                          *
+    *   *****************   *             *    ***************         ****************  ***********          *
+      *  *               *   *             *    *             *                      *       *                *
+       *  *               *   *             *    *             *                    *         *               *
+        *  *                   *             *    *             *                  *           *              *
+         *  *                   *             *    *             *                *             *             *
+          *  *      *********    ***************    ***************              *               *            *
+           *  *              *    *             *    *             *            *                 *           *
+            *  *              *    *             *    *             *          *                   *          *
+             *  *              *    *             *    *             *        *                     *         *
+              *  *              *    *             *    *             *      *                       *        *
+               *  *              *    *             *    *             *    *                         *       *
+                *  ****************    *             *    *             *  *****************     ************ *
+                 *                                                                                            *
+                  *                                                                                           *
+                   ********************************************************************************************
+
+*/
+#include <iostream>
+#include <string>
+#include <stack>
+#define ll long long 
+#define out cout<<
+#define in cin>>
+#define nl <<endl
+using namespace std;
+
+stack<int> values;		//Store operends
+stack<char> operators;		//Store operators
+
+ll solve()
+{
+	ll operend1,operend2;
+	char top_operator;
+	operend2 = values.top();
+	values.pop();
+	operend1 = values.top();
+	values.pop();
+	top_operator = operators.top();
+	operators.pop();
+	switch(top_operator){
+	case '+': return operend1+operend2;
+	case '-': return operend1-operend2;
+	case '*': return operend1*operend2;
+	case '/': return operend1/operend2;
+	}
+}
+
+//Precedence of operators
+int checkPre(char c){
+	if(c=='+' || c=='-')
+		return 1;
+	if(c=='*' || c=='/')
+		return 2;
+
+	return 3;			
+}
+
+//Util funtion
+ll solvePre(string s)
+{
+	for(int i=0;i< s.length();i++)
+	{
+		if(s[i] == ' ')
+			continue;
+		else if(s[i] >= '0' && s[i] <= '9')
+		{
+			ll operend=0;
+			while(s[i] >= '0' && s[i] <= '9' && i < s.length())
+			{
+				operend = (operend*10) + (s[i] - '0');
+				i++;
+			}
+			values.push(operend);
+			i--;
+		}
+		else if(s[i] == '(')
+			operators.push(s[i]);
+		else if(s[i] == ')')
+		{
+			while(operators.top() !='(' && !operators.empty())
+				values.push(solve());
+			operators.pop();
+		}
+		else{
+			while(!operators.empty() && checkPre(s[i]) >= checkPre(operators.top()))
+				values.push(solve());	
+			operators.push(s[i]);
+		}
+	}
+	while(!operators.empty())
+			values.push(solve());
+
+	return values.top();
+}
+int main(int argc, char const *argv[])
+{
+	ll t;
+	string s;
+	in t;
+    cin.tie(NULL);
+	ios_base::sync_with_stdio(false);
+	while(t--)
+	{
+		in s;
+		out solvePre(s) nl;
+	}
+	return 0;
+}
