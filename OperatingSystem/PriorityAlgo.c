@@ -80,7 +80,7 @@ void showProDet(int n,pro p[]){
         
         // AvgTimes
         printf("\n                          Avg Times                        \n");
-        printf(" -----------------------------------------------------------\n"); //Avg w_time: 0.000000
+        printf(" -----------------------------------------------------------\n"); 
         printf("| Avg Waiting time: %f                                |\n| Avg turnAround time: %f                             |\n",avg_wt,avg_tat);  
         printf(" ------------------------------------------------------------");
     }
